@@ -24,6 +24,7 @@ import org.sonatype.nexus.repository.maven.internal.MavenSecurityFacet
 import org.sonatype.nexus.repository.maven.internal.VersionPolicyHandler
 import org.sonatype.nexus.repository.maven.internal.hosted.*
 import org.sonatype.nexus.repository.search.SearchFacet
+import org.sonatype.nexus.repository.sizeassetcount.SizeAssetCountAttributesFacet
 import org.sonatype.nexus.repository.types.HostedType
 import org.sonatype.nexus.repository.view.ConfigurableViewFacet
 import org.sonatype.nexus.repository.view.Router
@@ -81,6 +82,9 @@ class Maven2HostedRecipe
   Provider<PurgeUnusedReleasesFacet> mavenPurgeReleasedFacet
 
   @Inject
+  Provider<SizeAssetCountAttributesFacet> sizeAssetCountAttributesfacet
+
+  @Inject
   Maven2HostedRecipe(@Named(HostedType.NAME) final Type type,
                      @Named(Maven2Format.NAME) final Format format,
                      @Named(Maven2Format.NAME) MavenPathParser mavenPathParser,
@@ -103,6 +107,7 @@ class Maven2HostedRecipe
     repository.attach(removeSnapshotsFacet.get())
     repository.attach(configure(viewFacet.get()))
     repository.attach(mavenPurgeReleasedFacet.get())
+    repository.attach(sizeAssetCountAttributesfacet.get())
   }
 
   private ViewFacet configure(final ConfigurableViewFacet facet) {
